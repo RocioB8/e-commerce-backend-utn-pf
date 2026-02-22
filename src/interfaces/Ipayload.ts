@@ -1,7 +1,5 @@
-import { Types } from "mongoose"
-
 interface Ipayload {
-  _id: Types.ObjectId
+  _id: string
   email: string
   username: string
 }

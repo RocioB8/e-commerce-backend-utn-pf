@@ -1,0 +1,23 @@
+info:
+  name: REGISTER
+  type: http
+  seq: 1
+
+http:
+  method: POST
+  url: http://localhost:TU_PUERTO/api/auth/register
+  body:
+    type: json
+    data: |-
+      {
+        "username": "tu_usuario",
+        "email": "tucorreo@gmail.com",
+        "password": "tucontraseña"
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

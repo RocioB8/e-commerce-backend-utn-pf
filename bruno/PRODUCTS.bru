@@ -1,0 +1,22 @@
+info:
+  name: PRODUCTS
+  type: http
+  seq: 4
+
+http:
+  method: GET
+  url: http://localhost:TU_PUERTO/api/products
+  headers:
+    - name: Authorization
+      value: Bearer tu_token
+  params:
+    - name: ""
+      value: ""
+      type: query
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

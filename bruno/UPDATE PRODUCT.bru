@@ -1,0 +1,33 @@
+info:
+  name: UPDATE PRODUCT
+  type: http
+  seq: 5
+
+http:
+  method: PATCH
+  url: http://localhost:TU_PUERTO/api/products/_id_del_product
+  headers:
+    - name: Authorization
+      value: Bearer tu_token
+  body:
+    type: json
+    data: |-
+      {
+        "name": "PRODUCTO TEST - MODIFICADO",
+        "price": 55000,
+        "description": "Actualizamos el precio y agotamos el stock para probar el middleware.",
+        "variants": [
+          {
+            "number": 40,
+            "color": "Gris",
+            "quantity": 0
+          }
+        ]
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

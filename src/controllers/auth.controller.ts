@@ -6,6 +6,8 @@ import bcryptjs from "bcryptjs"
 import jwt from "jsonwebtoken"
 import { Request, Response } from "express"
 import { Ipayload } from "../interfaces/Ipayload"
+import { userValidate } from "../validators/userValidator"
+import { ZodError } from "zod"
 
 const JWT_SECRET = process.env.JWT_SECRET
 const JWT_EXPIRES = process.env.JWT_EXPIRES
@@ -17,80 +19,115 @@ if (!JWT_SECRET || !JWT_EXPIRES) {
 
 const register = async (req: Request, res: Response) => {
   try {
-    const data = req.body
-    const { email, password, username } = data
 
-    if (!email) {
-      return res.status(400).json({ success: false, error: "No se pudo crear el usuario. El email es obligatorio." })
-    } else if (!password) {
-      return res.status(400).json({
-        success: false, error: "No se pudo crear el usuario. La contraseña es obligatoria."
-      })
-    } else if (
-      !email.includes("@") ||
-      (!email.endsWith(".com") && !email.endsWith(".net"))
-    ) {
-      return res.status(400).json({
-        success: false,
-        error: "El email no es válido."
-      })
-    }
-    else if (password.length < 4) {
-      return res.status(400).json({
-        success: false, error: "La contraseña debe tener al menos 4 caracteres."
-      })
-    }
+    userValidate.parse(req.body);
 
-    const foundUser = await User.find({ email })
+    const { email, password, username } = req.body;
+
+
+    const foundUser = await User.find({ email });
 
     if (foundUser.length > 0) {
-      return res.status(400).json({ success: false, error: "❌ El email ya existe" })
+      return res.status(400).json({
+        success: false,
+        error: "❌ El email ya existe. Intenta con otro o inicia sesión."
+      });
     }
 
-    const hash = await bcryptjs.hash(password, 10)
-    const newDataUser = {
-      email: email,
+    const hash = await bcryptjs.hash(password, 10);
+
+    const newUser = await User.create({
+      email,
       password: hash,
-      username
+      username: username || "👤 Nuevo usuario"
+    });
+
+    const payload: Ipayload = {
+      _id: newUser._id.toString(),
+      username: newUser.username as string,
+      email: newUser.email as string
+    };
+
+    const token = jwt.sign(payload, JWT_SECRET as string, {
+      expiresIn: JWT_EXPIRES as "1h"
+    });
+
+
+    res.status(201).json({
+      success: true,
+      message: `¡${newUser.username}, te has registrado con éxito✅!`,
+      data: {
+        user: {
+          _id: newUser._id,
+          username: newUser.username,
+          email: newUser.email
+        },
+        token: token
+      }
+    });
+
+  } catch (error) {
+
+    if (error instanceof ZodError) {
+      return res.status(400).json({
+        success: false,
+        error: "Error de validación",
+        details: error.issues.map(e => e.message)
+      });
     }
 
-    const newUser = await User.create(newDataUser)
-    res.status(201).json({ success: true, data: { _id: newUser._id, username: newUser.username, email: newUser.email } })
-  } catch (error) {
-    const err = error as Error
-    res.status(500).json({ success: false, error: err.message })
+    const err = error as Error;
+    res.status(500).json({ success: false, error: "Error en el servidor", message: err.message });
   }
-}
-
+};
 
 const login = async (req: Request, res: Response) => {
   try {
-    const body = req.body
-    const { email, password } = body
+    const { email, password } = req.body
 
     if (!email || !password) {
-      return res.status(400).json({ success: false, error: "Datos inválidos, ingrese los datos requeridos." })
-    }
-    const foundUser = await User.findOne({ email })
-    if (!foundUser) {
-      return res.status(404).json({ success: false, error: "Desautorizado" })
+      return res.status(400).json({
+        success: false,
+        error: "❌ Por favor, ingresa email y contraseña."
+      })
     }
 
-    const validatePassword = await bcryptjs.compare(password, foundUser.password)
+    const foundUser = await User.findOne({ email })
+
+    if (!foundUser) {
+      return res.status(401).json({ success: false, error: "❌ Credenciales incorrectas" })
+    }
+
+    const validatePassword = await bcryptjs.compare(password, foundUser.password as string)
 
     if (!validatePassword) {
-      return res.status(401).json({ success: false, error: "Desautorizado" })
+      return res.status(401).json({ success: false, error: "❌ Credenciales incorrectas" })
     }
-    // token o llave digital para autenticar y autorizar a un usuario en sistemas digitales
-    const payload: Ipayload = { _id: foundUser._id, username: foundUser.username, email: foundUser.email }
 
-    const token = jwt.sign(payload, JWT_SECRET, { expiresIn: JWT_EXPIRES as any })
+    const payload: Ipayload = {
+      _id: foundUser._id.toString(),
+      username: foundUser.username as string,
+      email: foundUser.email as string
+    }
 
-    res.json({ success: true, data: token })
+    const token = jwt.sign(payload, JWT_SECRET as string, {
+      expiresIn: JWT_EXPIRES as "1h"
+    })
+
+    res.json({
+      success: true,
+      message: `¡🤗 Bienvenido de nuevo, ${foundUser.username}!`,
+      data: token
+    })
 
   } catch (error) {
     const err = error as Error
-    res.status(500).json({ success: false, error: err.message })
+    res.status(500).json({
+      success: false,
+      error: "☹ Error interno del servidor",
+      message: err.message
+    })
   }
 }
-export { register, login } 
+
+export { register, login }

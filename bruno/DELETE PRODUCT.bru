@@ -1,0 +1,19 @@
+info:
+  name: DELETE PRODUCT
+  type: http
+  seq: 6
+
+http:
+  method: DELETE
+  url: http://localhost:TU_PUERTO/api/products/_id_DE_TU_PRODUCTO
+  headers:
+    - name: Authorization
+      value: Bearer TU_TOKEN
+
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

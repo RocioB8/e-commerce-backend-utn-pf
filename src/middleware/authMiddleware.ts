@@ -10,32 +10,31 @@ const authMiddleware = (req: Request, res: Response, next: NextFunction) => {
   const header = req.headers.authorization
 
   if (!header) {
-    return res.status(401).json({ success: false, error: "El token es requerido" })
-  }
-
-  if (!header.startsWith("Bearer")) {
-    return res.status(401).json({ success: false, error: "El token debe ser formato jwt" })
+    return res.status(401).json({ success: false, error: "📌El token es requerido" })
   }
 
   const array = header.split(" ")
-  const token = array[1]
 
-  if (!token) {
-    return res.status(401).json({ success: false, error: "Token inválido" })
+  if (array[0] !== "Bearer" || !array[1]) {
+    return res.status(401).json({ 
+      success: false, 
+      error: "📌El token debe tener formato Bearer" 
+    })
   }
 
+  const token = array[1]
+
   try {
-    const payload = jwt.verify(token, JWT_SECRET as string)
+    
+    const payload = jwt.verify(token, JWT_SECRET as string) as Ipayload
 
-    req.user = payload as Ipayload
-
+    req.user = payload
 
     next()
   } catch (error) {
-    const err = error as Error
-    res.status(500).json({ success: false, error: err.message })
+    
+    res.status(401).json({ success: false, error: "❌Token inválido o expirado" })
   }
-
 }
 
 export { authMiddleware }

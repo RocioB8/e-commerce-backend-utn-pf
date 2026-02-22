@@ -17,11 +17,11 @@ const productValidate = z.object({
   ).min(1, "⚠ Debe haber al menos una variante (talle/color)")
 });
 
-const productIdSchema = z.object({
+const productIdValidate = z.object({
   id: z.string().regex(/^[0-9a-fA-F]{24}$/, "❌ ID de producto inválido")
 });
 
 const productPartialValidate = productValidate.partial();
 
 
-export { productValidate, productPartialValidate, productIdSchema };
+export { productValidate, productPartialValidate, productIdValidate };

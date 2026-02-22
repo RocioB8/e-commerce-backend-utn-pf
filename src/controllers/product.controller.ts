@@ -1,6 +1,6 @@
 import { Product } from "../models/product.model"
 import { Request, Response } from "express"
-import { productPartialValidate, productValidate, productIdSchema} from "../validators/productValidator"
+import { productPartialValidate, productValidate, productIdValidate } from "../validators/productValidator"
 import { QueryFilter } from "mongoose"
 import { IProductDocument } from "../models/product.model"
 
@@ -86,9 +86,9 @@ const updateProduct = async (req: Request, res: Response) => {
 
     const validate = productPartialValidate.safeParse(updates);
     if (!validate.success) {
-      return res.status(400).json({ 
-        success: false, 
-        error: validate.error.flatten().fieldErrors 
+      return res.status(400).json({
+        success: false,
+        error: validate.error.flatten().fieldErrors
       });
     }
 
@@ -102,10 +102,10 @@ const updateProduct = async (req: Request, res: Response) => {
 
     const updatedProduct = await product.save();
 
-    res.json({ 
-      success: true, 
+    res.json({
+      success: true,
       message: "✅ Producto actualizado con éxito",
-      data: updatedProduct 
+      data: updatedProduct
     });
 
   } catch (error) {
@@ -116,8 +116,8 @@ const updateProduct = async (req: Request, res: Response) => {
 
 const deleteProduct = async (req: Request, res: Response) => {
   try {
-    // 1. Validamos el ID que viene por URL con Zod
-    const validation = productIdSchema.safeParse(req.params);
+
+    const validation = productIdValidate.safeParse(req.params);
 
     if (!validation.success) {
       return res.status(400).json({
@@ -130,23 +130,23 @@ const deleteProduct = async (req: Request, res: Response) => {
     const deletedProduct = await Product.findByIdAndDelete(id);
 
     if (!deletedProduct) {
-      return res.status(404).json({ 
-        success: false, 
-        error: "No existe el producto para borrar" 
+      return res.status(404).json({
+        success: false,
+        error: "No existe el producto para borrar"
       });
     }
 
-    res.json({ 
-      success: true, 
+    res.json({
+      success: true,
       message: "✅ Producto eliminado con éxito",
-      data: deletedProduct 
+      data: deletedProduct
     });
 
   } catch (error) {
     const err = error as Error;
-    res.status(500).json({ 
-      success: false, 
-      error: err.message 
+    res.status(500).json({
+      success: false,
+      error: err.message
     });
   }
 };

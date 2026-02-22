@@ -3,10 +3,6 @@ import { getProducts, createProduct, deleteProduct, updateProduct } from "../con
 
 const productRouter = Router()
 
-// Todas las peticiones que ingresan  
-// ProductRouter, empiezan con : 
-// http//localhost50000/products/
-
 productRouter.get("/", getProducts)
 
 productRouter.post("/", createProduct)

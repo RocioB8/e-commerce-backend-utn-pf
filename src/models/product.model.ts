@@ -73,6 +73,9 @@ const ProductSchema = new Schema<IProductDocument>(
 
 ProductSchema.pre<IProductDocument>("save", async function () {
   this.stock = this.variants.reduce((acc, v) => acc + v.quantity, 0);
+  this.variants.forEach((variant) => {
+    variant.isAvailable = variant.quantity > 0;
+  });
 });
 
 const Product = model<IProductDocument>("Product", ProductSchema);

@@ -1,5 +1,4 @@
 import dotenv from "dotenv"
-
 dotenv.config()
 
 import express from "express"
@@ -21,31 +20,30 @@ declare global {
 }
 
 serverHttp.use(cors())
-
 serverHttp.use(express.json())
 
-serverHttp.use("/products", authMiddleware, productRouter)
+serverHttp.use("/api/products", authMiddleware, productRouter)
 
-serverHttp.use("/auth", authRouter)
-
+serverHttp.use("/api/auth", authRouter)
 
 serverHttp.use((req, res) => {
-  res.status(404).json({ succes: false, error: "El recurso no se encuentra" })
+  res.status(404).json({ success: false, error: "🤔El recurso no se encuentra" })
 })
 
-const PORT = process.env.PORT
+const PORT = process.env.PORT || 5000
 
-
-serverHttp.listen(PORT, () => {
+const startServer = async () => {
   try {
+    await conectDb()
 
-    console.log(`✅ Servidor http en escucha para el puerto http://127.0.0.1:${PORT}`)
-
-    conectDb()
-
+    serverHttp.listen(PORT, () => {
+      console.log(`✅ Servidor corriendo en: http://localhost:${PORT}`)
+      console.log(`🔒 Rutas de productos protegidas con éxito`)
+    })
   } catch (error) {
-    const err = error as Error
-    console.log("❌ No se pudo iniciar el servidor", err.message)
+    console.log("❌ Error al iniciar:", error)
     process.exit(1)
   }
-})
+}
+
+startServer()

@@ -1,0 +1,22 @@
+info:
+  name: LOGIN
+  type: http
+  seq: 2
+
+http:
+  method: POST
+  url: http://localhost:TU_PUERTO/api/auth/login
+  body:
+    type: json
+    data: |-
+      {
+        "email": "tucorreo@gmail.com",
+        "password": "tucontraseña"
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

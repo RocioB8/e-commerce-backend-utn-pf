@@ -1,8 +1,8 @@
 interface IVariant {
   color: string;
-  size: number;
-  stock: number;
+  number: number;
   quantity: number;
+  isAvailable: boolean
 }
 
 
