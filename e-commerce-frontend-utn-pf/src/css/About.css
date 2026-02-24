@@ -1,0 +1,90 @@
+.about-page {
+  background-color: #fcfaf9;
+  min-height: 100vh;
+}
+
+.about-container {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 60px 20px;
+}
+
+.about-hero {
+  text-align: center;
+  margin-bottom: 60px;
+}
+
+.about-hero h1 {
+  font-size: 3rem;
+  color: #333;
+  margin-bottom: 20px;
+  text-transform: uppercase;
+  letter-spacing: -1px;
+}
+
+.about-hero p {
+  font-size: 1.2rem;
+  color: #666;
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+.about-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 25px;
+  margin-bottom: 60px;
+}
+
+.about-card {
+  background: white;
+  padding: 35px 25px;
+  border-radius: 25px;
+  border: 2px solid transparent;
+  box-shadow: 0 10px 20px rgba(0,0,0,0.03);
+  text-align: center;
+  transition: all 0.3s ease;
+}
+
+.about-card:hover {
+  border-color: #ffcad4;
+  transform: translateY(-10px);
+  box-shadow: 0 15px 30px rgba(255, 202, 212, 0.3);
+}
+
+.about-icon {
+  color: #ffcad4;
+  margin-bottom: 20px;
+  display: flex;
+  justify-content: center;
+}
+
+.about-card h3 {
+  font-size: 1.3rem;
+  margin-bottom: 12px;
+  color: #333;
+}
+
+.about-card p {
+  color: #888;
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+.about-footer-info {
+  text-align: center;
+  background: linear-gradient(135deg, #ffcad4 0%, #ffb3c1 100%);
+  padding: 50px;
+  border-radius: 30px;
+  color: #333;
+}
+
+.about-footer-info h2 {
+  font-size: 2rem;
+  margin-bottom: 10px;
+}
+
+@media (max-width: 768px) {
+  .about-hero h1 { font-size: 2.2rem; }
+  .about-footer-info { padding: 30px 20px; }
+}
