@@ -52,6 +52,14 @@ Se utiliza un middleware `pre-save` en Mongoose que:
 
 ---
 
+
+### 🔍 Ejemplo de uso de Filtros (Punto de Investigación)
+Para filtrar productos por precio o categoría, podés usar:
+- `GET /api/products?minPrice=1000&maxPrice=5000`
+- `GET /api/products?category=Running`
+- `GET /api/products?name=Nike`
+
+
 ## ⚙️ Instalación y Setup
 
 ### 1. Configuración del Backend
@@ -70,3 +78,4 @@ npm run dev
     npm install
     # Crear .env con VITE_BASE_API
     npm run dev
+----
