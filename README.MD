@@ -1,202 +1,133 @@
-# 👟 Sneakers Shop - Fullstack Inventory System (UTN)
+# 👟 Sneakers Shop - Fullstack Inventory System
 
-Sistema full stack para la gestión de catálogo y stock de calzado deportivo. Este proyecto combina una **API REST escalable** con un **Panel de Administración moderno**, desarrollado con un enfoque 100% **TypeScript** y buenas prácticas de arquitectura.
+Aplicación full stack para la gestión de inventario de calzado deportivo.
+Desarrollada con Node.js, Express, MongoDB y React, implementa autenticación con JWT, arquitectura MVC y despliegue en producción.
 
 ---
 
 ## 🌐 Demo en Producción
 
-🔗 **Frontend:**
+🔗 Frontend:
 https://e-commerce-frontend-utn-pf.onrender.com
 
-🔗 **Backend:**
+🔗 Backend:
 https://e-commerce-backend-utn-pf.onrender.com
 
-⚠️ Nota: Las rutas protegidas requieren autenticación mediante JWT.
-
----
-
-## 📂 Estructura del Proyecto (Monorepo)
-
-```
-/backend   → API REST (Node.js, Express, MongoDB)
-/frontend  → Panel administrativo (React, Vite, TypeScript)
-```
+⚠️ Las rutas protegidas requieren autenticación mediante JWT.
 
 ---
 
 ## 🛠️ Stack Tecnológico
 
-### 🔹 Backend
+**Backend**
 
-* **Lenguaje:** TypeScript (Strict Mode)
-* **Framework:** Express.js
-* **Base de Datos:** MongoDB (Mongoose)
-* **Autenticación:** JWT (JSON Web Tokens)
-* **Encriptación:** bcryptjs
-* **Validación:** Zod
+* Node.js + Express
+* TypeScript
+* MongoDB + Mongoose
+* JWT + bcryptjs
+* Zod
 
-### 🔹 Frontend
+**Frontend**
 
-* **Framework:** React + Vite
-* **Lenguaje:** TypeScript
-* **Estado:** Context API (`AuthContext`)
-* **Consumo API:** Fetch centralizado
-* **Estilos:** CSS Modules / Tailwind
+* React + Vite
+* TypeScript
+* Context API (Auth)
+* Fetch centralizado
 
 ---
 
 ## 🚀 Funcionalidades
 
-### 🔐 Autenticación
-
 * Registro y login de usuarios
-* Generación de token JWT
-* Protección de rutas privadas
-
-### 📦 Gestión de Productos
-
-* Crear productos
-* Editar productos
-* Eliminar productos
-* Listado con filtros
-
-### 🧠 Lógica Inteligente de Stock
-
-* Middleware `pre-save` en Mongoose
-* Cálculo automático de stock total
-* Actualización dinámica de disponibilidad (`isAvailable`)
-
-### 🖥️ Panel Administrativo
-
-* Rutas protegidas
-* CRUD completo desde interfaz
-* Tipado compartido entre frontend y backend
+* Autenticación con JWT
+* CRUD completo de productos
+* Filtros por nombre, precio y categoría
+* Panel administrativo con rutas protegidas
 
 ---
 
-## 📡 Endpoints Principales
+## 🧪 Cómo probar la app
 
-| Método | Ruta                | Descripción                |
-| ------ | ------------------- | -------------------------- |
-| POST   | `/api/auth/login`   | Login y obtención de token |
-| GET    | `/api/products`     | Obtener productos          |
-| POST   | `/api/products`     | Crear producto (Auth)      |
-| PATCH  | `/api/products/:id` | Actualizar producto        |
-| DELETE | `/api/products/:id` | Eliminar producto          |
+1. Ingresar al frontend
+2. Registrarse
+3. Iniciar sesión
+4. Crear, editar o eliminar productos
 
 ---
 
-## 🔍 Filtros de Búsqueda
+## 📡 Endpoints principales
 
-Ejemplos:
-
-```
-GET /api/products?minPrice=1000&maxPrice=5000
-GET /api/products?category=Running
-GET /api/products?name=Nike
-```
-
----
-
-## ⚙️ Instalación y Setup
-
-### 🔹 1. Clonar repositorio
-
-```bash
-git clone https://github.com/RocioB8/e-commerce-backend-utn-pf
-cd e-commerce-backend-utn-pf
-```
+| Método | Ruta                |
+| ------ | ------------------- |
+| POST   | `/api/auth/login`   |
+| GET    | `/api/products`     |
+| POST   | `/api/products`     |
+| PATCH  | `/api/products/:id` |
+| DELETE | `/api/products/:id` |
 
 ---
 
-### 🔹 2. Backend
+## ⚙️ Variables de entorno
 
-```bash
-cd backend
-npm install
-```
-
-Crear archivo `.env`:
-
-```env
-PORT=54000
-URI_DB=tu_uri_mongodb
-JWT_SECRET=tu_secreto
-JWT_EXPIRES=1h
-```
-
-Ejecutar:
-
-```bash
-npm run dev
-```
-
----
-
-### 🔹 3. Frontend
-
-```bash
-cd frontend
-npm install
-```
-
-Crear archivo `.env`:
+### Desarrollo (local)
 
 ```env
 VITE_BASE_API=http://localhost:54000/api
 ```
 
-Ejecutar:
+### Producción
+
+La aplicación en producción ya está conectada al backend desplegado en Render.
+
+---
+
+## ⚙️ Instalación local
 
 ```bash
+# Backend
+cd backend
+npm install
 npm run dev
+
+# Frontend
+cd frontend
+npm install
+npm run dev
+```
+
+Crear `.env`:
+
+```env
+# Backend
+PORT=54000
+URI_DB=tu_uri_mongodb
+JWT_SECRET=tu_secreto
+
+# Frontend
+VITE_BASE_API=http://localhost:54000/api
 ```
 
 ---
 
-## ☁️ Deploy
+## 📚 Aprendizajes
 
-El proyecto está desplegado en **Render**:
-
-* Backend como **Web Service**
-* Frontend como **Static Site**
-* Base de datos en **MongoDB Atlas**
-
----
-
-## 🧪 Testing
-
-Las pruebas de endpoints se realizaron utilizando herramientas como:
-
-* Bruno / Postman
-* Requests autenticadas con JWT
-
----
-
-## 💼 Sobre el Proyecto
-
-Este proyecto fue desarrollado como práctica integradora aplicando:
-
-* Arquitectura MVC
-* Manejo de autenticación segura
-* Integración frontend-backend
-* Deploy en entorno productivo
-* Uso de variables de entorno
+* Implementación de autenticación con JWT
+* Manejo de variables de entorno en producción
+* Deploy full stack en Render
+* Integración frontend + backend
+* Uso de MongoDB Atlas
 
 ---
 
 ## 📌 Autor
 
-**Rocío Benítez**
+Rocío Benítez
 
 ---
 
-## 🚀 Estado del Proyecto
+## 🚀 Estado
 
-✅ Funcional en producción
+✅ Proyecto funcional en producción
 ✅ Deploy completo (Frontend + Backend)
-✅ Conectado a base de datos en la nube
-🔄 Escalable y listo para mejoras futuras
+✅ Escalable y listo para mejoras
 
----
